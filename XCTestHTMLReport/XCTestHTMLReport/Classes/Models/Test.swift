@@ -96,8 +96,14 @@ struct Test: HTML
             activities = rawActivitySummaries.map { Activity(screenshotsPath: screenshotsPath, dict: $0, padding: 20) }
         }
 
-        let rawStatus = dict["TestStatus"] as? String ?? ""
-        status = Status(rawValue: rawStatus)!
+        if let rawStatus = dict["TestStatus"] as? String,
+            let status =  Status(rawValue: rawStatus) {
+            self.status = status
+        } else {
+            self.status = (subTests ?? []).reduce(Status.success, { (result: Status, test: Test) -> Status in
+                test.status == Status.success ? result : Status.failure
+            })
+        }
     }
 
     // PRAGMA MARK: - HTML
