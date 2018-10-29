@@ -4,3 +4,5 @@ gem 'colorize'
 gem 'thor'
 gem 'xcpretty'
 gem 'fastlane'
+gem 'nokogiri'
+
